@@ -1,0 +1,21 @@
+{
+  "name": "pw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "code": "npx playwright codegen",
+    "report": "npx playwright show-report",
+    "ui": "npx playwright test --ui"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@faker-js/faker": "^10.4.0",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.1"
+  }
+}
