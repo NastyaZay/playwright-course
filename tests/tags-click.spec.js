@@ -1,33 +1,33 @@
 import { test, expect } from '@playwright/test';
-import { TagsPage } from '../pages/tags.page';
+import { HomePage } from '../pages/home.page';
 
 test('после клика по тегу показываются статьи с этим тегом', async ({ page }) => {
-  const tagsPage = new TagsPage(page);
+  const homePage = new HomePage(page);
   const selectedTag = 'реклама';
 
   // открываем страницу
-  await tagsPage.open();
+  await homePage.open();
 
   // ждём, что страница загрузилась и первый тег стал видимым
-  await expect(tagsPage.tags.first()).toBeVisible();
+  await expect(homePage.tags.first()).toBeVisible();
 
   // кликаем по нужному тегу
-  await tagsPage.clickTag(selectedTag);
+  await homePage.clickTag(selectedTag);
 
   // проверяем, что появился активный таб с выбранным тегом
-  await expect(tagsPage.selectedTagTab(selectedTag)).toBeVisible();
+  await expect(homePage.selectedTagTab(selectedTag)).toBeVisible();
 
   // ждём, что первая статья стала видимой
-  await expect(tagsPage.articles.first()).toBeVisible();
+  await expect(homePage.articles.first()).toBeVisible();
 
   // получаем количество статей
-  const articleCount = await tagsPage.articles.count();
+  const articleCount = await homePage.articles.count();
   expect(articleCount).toBeGreaterThan(0);
 
   // проверяем, что в каждой статье есть выбранный тег
   for (let i = 0; i < articleCount; i++) {
-    const article = tagsPage.articles.nth(i);
-    const articleTags = tagsPage.articleTags(article);
+    const article = homePage.articles.nth(i);
+    const articleTags = homePage.articleTags(article);
     const tagsWithSelected = articleTags.filter({ hasText: selectedTag });
 
     await expect(tagsWithSelected).toHaveCount(1);

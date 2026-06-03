@@ -1,4 +1,4 @@
-export class TagsPage {
+export class HomePage {
   constructor(page) {
     // сохраняем объект page, чтобы дальше работать с текущей страницей
     this.page = page;
@@ -39,5 +39,24 @@ async openFirstArticle() {
  // находим блок пагинации внизу страницы
 pagination() {
   return this.page.locator('.pagination');
+}
+ // Нажатие на кнопку login
+async clickLoginButton() {
+  await this.page.getByRole('link', { name: 'Login' }).click();
+}
+
+// Локатор количества лайков первой статьи
+likeCount() {
+  return this.articles.first().locator('button.btn.btn-sm.btn-outline-primary.pull-xs-right span.counter');
+}
+
+// Нажатие на кнопку лайка первой статьи
+async clickLikeButton() {
+  await this.articles.first().locator('button.btn.btn-sm.btn-outline-primary.pull-xs-right').click();
+}
+
+// клик по тегу Global Feed
+  async clickGlobalFeedTab() {
+    await this.page.getByRole('button', { name: 'Global Feed' }).click();
 }
 }

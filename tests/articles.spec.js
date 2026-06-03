@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { TagsPage } from '../pages/tags.page';
+import { HomePage } from '../pages/home.page';
 
 test('при клике по статье открывается страница статьи и меняется url', async ({ page }) => {
-  const tagsPage = new TagsPage(page);
+  const homePage = new HomePage(page);
 
   // открываем главную страницу
-  await tagsPage.open();
+  await homePage.open();
 
   // ждём, что первая статья появилась
-  await expect(tagsPage.articles.first()).toBeVisible();
+  await expect(homePage.articles.first()).toBeVisible();
 
   // сохраняем заголовок первой статьи
-  const articleTitle = await tagsPage.firstArticleTitle().textContent();
+  const articleTitle = await homePage.firstArticleTitle().textContent();
 
   // открываем первую статью
-  await tagsPage.openFirstArticle();
+  await homePage.openFirstArticle();
 
   // проверяем, что url изменился и содержит article
   await expect(page).toHaveURL(/.*article.*/);

@@ -1,22 +1,22 @@
 import { test, expect } from '@playwright/test';
-import { TagsPage } from '../pages/tags.page';
+import { HomePage } from '../pages/home.page';
 
 test('отображение пагинации при условии, что статей 3 и больше', async ({ page }) => {
-  const tagsPage = new TagsPage(page);
+  const homePage = new HomePage(page);
 
   // открываем страницу
-  await tagsPage.open();
+  await homePage.open();
 
   // ждём, что страница загрузилась
-  await expect(tagsPage.articles.first()).toBeVisible();
+  await expect(homePage.articles.first()).toBeVisible();
 
   // считаем количество статей
-  const articleCount = await tagsPage.articles.count();
+  const articleCount = await homePage.articles.count();
 
   // если статей 3 и больше — пагинация должна отображаться
   if (articleCount >= 3) {
-    await expect(tagsPage.pagination()).toBeVisible();
+    await expect(homePage.pagination()).toBeVisible();
   } else {
-    await expect(tagsPage.pagination()).toHaveCount(0);
+    await expect(homePage.pagination()).toHaveCount(0);
   }
 });
