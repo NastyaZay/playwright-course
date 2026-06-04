@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
+//import { faker } from '@faker-js/faker';
 
 const URL = "https://realworld.qa.guru/";
 let userName = "Nastya2805";
