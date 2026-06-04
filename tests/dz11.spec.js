@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+/*import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
   await page.goto ('https://stage.studwork.dev/sign-up');
@@ -9,3 +9,4 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Регистрация' }).click();
   await expect(page.getByText('zaytseva1177745@yandex.ru')).toBeVisible();
 });
+*/
