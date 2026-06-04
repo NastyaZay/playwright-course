@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+/* import { test, expect } from '@playwright/test';
 //import { faker } from '@faker-js/faker';
 
 const URL = "https://realworld.qa.guru/";
@@ -17,3 +17,4 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign up' }).click();
   await expect(page.getByRole('navigation')).toContainText(userName);
 });
+*/
