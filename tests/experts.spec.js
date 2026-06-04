@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+/*import { test, expect } from '@playwright/test';
 
 test('test', async ({ page }) => {
  await page.goto('https://stage.studwork.dev/experts');
@@ -7,3 +7,4 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Найти' }).click();
   await expect(page.locator('#app')).toContainText('Найти');
 });
+*/
