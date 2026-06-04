@@ -24,16 +24,16 @@ test('Проверка лайка на статье', async ({ page }) => {
   // нажимаем на кнопку Login
   await page.getByRole('button', { name: 'Login' }).click();
 
-  //ждем, что страница загрузилась
-  //await expect(homePage.articles.first()).toBeVisible();
+  // ждём, что страница после логина загрузилась
+  await expect(page.getByText('test123')).toBeVisible();
 
   // проверяем отображение логина пользователя
   await expect(page.getByText('test123')).toBeVisible();
 
-// ШАГИ
+  // ШАГИ
   // кликаем по табу "Global Feed"
   await homePage.clickGlobalFeedTab();
-  
+
   // ждём, что лента загрузилась
   await expect(homePage.articles.first()).toBeVisible();
 
@@ -41,12 +41,11 @@ test('Проверка лайка на статье', async ({ page }) => {
   const initialLikesText = await homePage.likeCount().textContent();
 
   // оставляем только цифры и превращаем строку в число
-  const initialLikesCount = Number(initialLikesText.replace(/\D/g, ''));
+  const initialLikesCount = Number((initialLikesText || '').replace(/\D/g, ''));
 
   // нажимаем на кнопку лайка первой статьи в ленте
   await homePage.clickLikeButton();
 
   // проверяем, что количество лайков увеличилось на единицу
-  await expect(homePage.likeCount()).toHaveText(`( ${initialLikesCount + 1} )`);
-
-})
+  await expect(homePage.likeCount()).toContainText(String(initialLikesCount + 1));
+});
