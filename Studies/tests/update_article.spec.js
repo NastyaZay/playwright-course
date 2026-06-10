@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { fakerRU as faker } from "@faker-js/faker";
 import { HomePage } from "../pages/home.page.js";
-import { NewArticlePage } from "../pages/newArticle.page.js";
+import { NewArticlePage } from "../pages/newarticle.page.js";
 import { ArticlePage } from "../pages/article.page.js";
 
 // функция генерации тестовых данных статьи
