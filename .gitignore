@@ -1,9 +1,21 @@
+# Отслеживать только Studies, остальное игнорировать
+/*
+!/Studies/
+!/Studies/**
 
 # Playwright
 node_modules/
 /test-results/
 /playwright-report/
-/blob-report/
+/blob_report/
 /playwright/.cache/
 /playwright/.auth/
-.DS_Store
+/.DS_Store
+
+# macOS внутри Studies
+Studies/.DS_Store
+Studies/pages/.DS_Store
+Studies/playwright-report/
+Studies/test-results/
+
+
