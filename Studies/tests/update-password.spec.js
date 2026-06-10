@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { HomePage } from "../pages/home.page";
-import { SettingsPage } from "../pages/settings.page";
+import { HomePage } from "../pages/home.page.js";
+import { SettingsPage } from "../pages/settings.page.js";
 
 const passwordUser = {
   email: "rrrrr666@ya.ru",
