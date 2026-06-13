@@ -16,18 +16,6 @@ function generateArticleData() {
   };
 }
 
-// функция заполнения формы статьи
-async function fillArticleForm(page, article) {
-  await page.getByPlaceholder("Article Title").fill(article.title);
-  await page
-    .getByPlaceholder("What's this article about?")
-    .fill(article.description);
-  await page
-    .getByPlaceholder("Write your article (in markdown)")
-    .fill(article.body);
-  await page.getByPlaceholder("Enter tags").fill(article.tag);
-}
-
 test("Удалить статью", async ({ page }) => {
   const homePage = new HomePage(page);
   const newArticlePage = new NewArticlePage(page);
@@ -37,44 +25,37 @@ test("Удалить статью", async ({ page }) => {
   await homePage.open();
 
   // ждём, что страница загрузилась
-  await expect(homePage.articles.first()).toBeVisible();
+  await expect(homePage.firstArticle).toBeVisible();
 
   // нажимаем на кнопку Login
   await homePage.clickLoginButton();
 
   // ждём, что страница авторизации загрузилась
-  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+  await expect(homePage.signInHeading).toBeVisible();
 
   // вводим email и пароль
-  await page.getByPlaceholder("Email").fill("test1234567@ya.ru");
-  await page.getByPlaceholder("Password").fill("123321");
-
-  // нажимаем на кнопку Login
-  await page.getByRole("button", { name: "Login" }).click();
+  await homePage.login("test1234567@ya.ru", "123321");
 
   // ждём, что страница после логина загрузилась
-  await expect(page.getByRole("button", { name: "Your Feed" })).toBeVisible();
+  await expect(homePage.yourFeedButton).toBeVisible();
 
   // проверяем отображение логина пользователя
-  await expect(page.getByText("test1234567")).toBeVisible();
+  await expect(homePage.getUserName("test1234567")).toBeVisible();
 
   // нажимаем на кнопку New Article
   await homePage.clickNewArticle();
 
   // ждём, что страница создания статьи загрузилась
-  await expect(page.getByPlaceholder("Article Title")).toBeVisible();
+  await expect(newArticlePage.articleTitleInput).toBeVisible();
 
   // генерируем уникальные данные
   const article = generateArticleData();
 
   // заполняем форму статьи
-  await fillArticleForm(page, article);
+  await newArticlePage.fillArticleForm(article);
 
   // нажимаем на кнопку Publish Article
   await newArticlePage.clickPublishArticle();
-
-  // ждём переход на страницу созданной статьи
-  await page.waitForURL(/.*article.*/, { timeout: 10000 });
 
   // проверяем изменение url - переход на страницу созданной статьи
   await expect(page).toHaveURL(/.*article.*/);

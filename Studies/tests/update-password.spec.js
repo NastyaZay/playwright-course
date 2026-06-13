@@ -11,97 +11,96 @@ test("Изменить пароль пользователя", async ({ page }) 
   const homePage = new HomePage(page);
   const settingsPage = new SettingsPage(page);
 
-  // Сохраняем старый пароль, чтобы потом вернуть его обратно.
   const oldPassword = passwordUser.password;
+  const newPassword = "Test55555";
 
-  // Новый пароль для проверки смены пароля.
-  const newPassword = "55555";
-
-  // Открываем главную страницу приложения.
+  // открываем главную страницу приложения
   await homePage.open();
 
-  // Проверяем, что главная страница действительно загрузилась.
-  await expect(page.getByRole("link", { name: "Login" })).toBeVisible();
+  // проверяем, что главная страница загрузилась
+  await expect(homePage.loginButton).toBeVisible();
 
-  // Переходим на страницу логина.
+  // переходим на страницу логина
   await homePage.clickLoginButton();
 
-  // Убеждаемся, что форма входа открылась.
-  await expect(page.getByRole("heading", { name: "Sign in" })).toBeVisible();
+  // убеждаемся, что форма входа открылась
+  await expect(homePage.signInHeading).toBeVisible();
 
-  // Логинимся под пользователем со старым паролем.
-  await page.getByPlaceholder("Email").fill(passwordUser.email);
-  await page.getByPlaceholder("Password").fill(oldPassword);
-  await page.getByRole("button", { name: "Login" }).click();
+  // логинимся под пользователем со старым паролем
+  await homePage.login(passwordUser.email, oldPassword);
 
-  // Проверяем, что авторизация прошла успешно.
-  await expect(page).not.toHaveURL(/login/i);
+  // проверяем успешный вход
+  await expect(homePage.yourFeedButton).toBeVisible();
 
-  // Переходим в настройки аккаунта.
+  // переходим в настройки аккаунта
   await homePage.openUserMenu();
-  await homePage.Settings();
+  await homePage.openSettings();
 
-  // Убеждаемся, что мы действительно на странице настроек.
+  // убеждаемся, что открылась страница настроек
   await expect(page).toHaveURL(/settings/);
 
-  // Вводим новый пароль.
+  // вводим новый пароль
   await settingsPage.fillPassword(newPassword);
 
-  // Сохраняем изменения.
+  // проверяем, что кнопка сохранения доступна
+  await expect(settingsPage.getUpdateSettingsButton()).toBeVisible();
+
+  // сохраняем изменения
   await settingsPage.clickUpdateSettings();
 
-  // Ждём, пока кнопка Update исчезнет.
-  await expect(settingsPage.updateSettingsButton).toBeHidden();
+  // ждём завершения обновления
+  await expect(settingsPage.getUpdateSettingsButton()).toBeHidden();
 
-  // Ждём немного после сохранения настроек.
-  await page.waitForTimeout(2000);
-
-  // Разлогин.
+  // разлогиниваемся
   await homePage.openUserMenu();
   await homePage.logout();
 
-  // После logout снова открываем страницу логина.
+  // убеждаемся, что снова видим кнопку Login
+  await expect(homePage.loginButton).toBeVisible();
+
+  // снова открываем страницу логина
   await homePage.clickLoginButton();
+  await expect(homePage.signInHeading).toBeVisible();
 
-  // Пробуем войти уже с новым паролем.
-  await page.getByPlaceholder("Email").fill(passwordUser.email);
-  await page.getByPlaceholder("Password").fill(newPassword);
-  await page.getByRole("button", { name: "Login" }).click();
+  // входим с новым паролем
+  await homePage.login(passwordUser.email, newPassword);
 
-  // Проверяем, что вход с новым паролем успешен.
-  await expect(page).not.toHaveURL(/login/i);
+  // проверяем, что вход с новым паролем успешен
+  await expect(homePage.yourFeedButton).toBeVisible();
 
-  // Снова переходим в настройки аккаунта.
+  // снова переходим в настройки
   await homePage.openUserMenu();
-  await homePage.Settings();
+  await homePage.openSettings();
 
-  // Убеждаемся, что мы снова на странице настроек.
+  // убеждаемся, что мы снова на странице настроек
   await expect(page).toHaveURL(/settings/);
 
-  // Возвращаем старый пароль.
+  // возвращаем старый пароль
   await settingsPage.fillPassword(oldPassword);
 
-  // Сохраняем настройки.
+  // проверяем, что кнопка сохранения доступна
+  await expect(settingsPage.getUpdateSettingsButton()).toBeVisible();
+
+  // сохраняем изменения
   await settingsPage.clickUpdateSettings();
 
-  // Ждём, пока кнопка Update исчезнет.
-  await expect(settingsPage.updateSettingsButton).toBeHidden();
+  // ждём завершения обновления
+  await expect(settingsPage.getUpdateSettingsButton()).toBeHidden();
 
-  // Ждём немного после сохранения настроек.
-  await page.waitForTimeout(2000);
-
-  // Разлогин.
+  // разлогиниваемся
   await homePage.openUserMenu();
   await homePage.logout();
 
-  // Снова открываем страницу логина.
+  // убеждаемся, что снова видим кнопку Login
+  await expect(homePage.loginButton).toBeVisible();
+
+  // снова открываем страницу логина
   await homePage.clickLoginButton();
+  await expect(homePage.signInHeading).toBeVisible();
 
-  // Проверяем, что вход со старым паролем снова работает.
-  await page.getByPlaceholder("Email").fill(passwordUser.email);
-  await page.getByPlaceholder("Password").fill(oldPassword);
-  await page.getByRole("button", { name: "Login" }).click();
+  // проверяем, что старый пароль снова работает
+  await homePage.login(passwordUser.email, oldPassword);
 
-  // Проверяем, что восстановленный пароль работает.
-  await expect(page).not.toHaveURL(/login/i);
+  // проверяем успешный вход
+  await expect(homePage.yourFeedButton).toBeVisible();
 });

@@ -1,5 +1,3 @@
-import { expect } from "@playwright/test";
-
 export class SettingsPage {
   constructor(page) {
     this.page = page;
@@ -29,7 +27,10 @@ export class SettingsPage {
   }
 
   async clickUpdateSettings() {
-    await expect(this.updateSettingsButton).toBeVisible();
     await this.updateSettingsButton.click();
+  }
+
+  getUpdateSettingsButton() {
+    return this.updateSettingsButton;
   }
 }

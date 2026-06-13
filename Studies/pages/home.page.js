@@ -2,80 +2,71 @@ export class HomePage {
   constructor(page) {
     this.page = page;
 
-    // локатор всех карточек статей, которые отображаются в ленте
+    // локаторы главной страницы
     this.articles = page.locator(".article-preview");
-
-    // локатор кнопки Login в шапке сайта
-    this.loginButton = page.getByRole("link", { name: "Login" });
-
-    // локатор таба Global Feed
+    this.firstArticle = this.articles.first();
+    this.firstArticleTitleLink = this.firstArticle.locator("h1");
+    this.paginationBlock = page.locator(".pagination");
     this.globalFeedTab = page.getByRole("button", { name: "Global Feed" });
 
-    // локатор блока пагинации внизу страницы
-    this.paginationBlock = page.locator(".pagination");
+    // локаторы авторизации
+    this.loginButton = page.getByRole("link", { name: "Login" });
+    this.signInHeading = page.getByRole("heading", { name: "Sign in" });
+    this.emailInput = page.getByPlaceholder("Email");
+    this.passwordInput = page.getByPlaceholder("Password");
+    this.loginSubmitButton = page.getByRole("button", { name: "Login" });
+    this.yourFeedButton = page.getByRole("button", { name: "Your Feed" });
 
-    // локатор первой статьи в ленте
-    this.firstArticle = this.articles.first();
-
-    // локатор заголовка первой статьи
-    this.firstArticleTitleLink = this.firstArticle.locator("h1");
-
-    // локатор кнопки New Article в шапке сайта
+    // локаторы пользователя
     this.newArticleButton = page.getByRole("link", { name: "New Article" });
-
-    // открыть выпадающее меню пользователя
-    this.userMenuToggle = this.page.locator(".nav-item.dropdown .nav-link");
-
-    // пункт Logout в выпадающем меню
-    this.logoutLink = this.page.getByRole("link", { name: "Logout" });
-
-    // пункт Settings в выпадающем меню
-    this.SettingsLink = this.page.getByRole("link", { name: "settings" });
+    this.userMenuToggle = page.locator(".nav-item.dropdown .nav-link");
+    this.logoutLink = page.getByRole("link", { name: "Logout" });
+    this.settingsLink = page.getByRole("link", { name: "Settings" });
   }
 
-  // методы
   async open() {
-    // открываем главную страницу сайта
     await this.page.goto("https://realworld.qa.guru/");
   }
 
-  firstArticleTitle() {
-    // возвращаем локатор заголовка первой статьи в ленте
+  getFirstArticleTitle() {
     return this.firstArticleTitleLink;
   }
 
-  pagination() {
-    // возвращаем локатор блока пагинации внизу страницы
+  getPagination() {
     return this.paginationBlock;
   }
 
   async clickLoginButton() {
-    // нажимаем на кнопку Login
     await this.loginButton.click();
   }
 
+  async login(email, password) {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.loginSubmitButton.click();
+  }
+
   async clickGlobalFeedTab() {
-    // кликаем по табу Global Feed
     await this.globalFeedTab.click();
   }
 
   async clickNewArticle() {
-    // нажимаем на кнопку New Article
     await this.newArticleButton.click();
   }
 
-  // нажимаем на меню пользователя
   async openUserMenu() {
     await this.userMenuToggle.click();
   }
 
-  //нажимаем на пункт Logout
   async logout() {
     await this.logoutLink.click();
   }
 
-  //нажимаем на пункт Settings
-  async Settings() {
-    await this.SettingsLink.click();
+  async openSettings() {
+    await this.settingsLink.click();
+  }
+
+  getUserName(name) {
+    return this.page.getByText(name);
   }
 }
